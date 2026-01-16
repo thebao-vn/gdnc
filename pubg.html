@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gia Đình Nhìu Chiện PUBG</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #050505;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+        .gaming-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+
+        /* Marquee Animation */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 15s linear infinite;
+            padding-left: 100%;
+        }
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        /* Modal Animation */
+        .modal-enter {
+            animation: fadeInScale 0.3s ease-out forwards;
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Glitch Effect Text */
+        .glitch {
+            position: relative;
+        }
+        
+        .neon-border {
+            box-shadow: 0 0 10px currentColor;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Data Source
+        const teamData = {
+            leader: {
+                name: "THEBÁO",
+                id: "51765023672",
+                avatar: "https://i.ibb.co/wFTTwC4z/Focus-on-the-2k-202601151847.jpg",
+                personalImg: "https://i.ibb.co/zT1S8G6J/Create-a-highresolution-2k-202601080001.jpg",
+                zalo: "https://zaloapp.com/qr/p/xzkrobe1cdfg?src=qr",
+                desc: "Chủ gia đình - Người không có tiếng lói trong gia đình. Hiền như bụi nhưng bụi nào thì...",
+                slogan: "\"gánh team (hoặc gánh tạ or gánh nặng)!\", \"mưu hèn kế mất zạy\", \"ae toy là chính gọi là có mặt\", \"cái nào ra cái nào\" \"chuyện gì ra chuyện gì\" \"đâu ra đâu\"",
+                drive: "https://drive.google.com/drive/folders/10t7w6ygyRW4UtkkaUuM53Z6vQC319q4X",
+                color: "#FF0000" // Red
+            },
+            members: [
+                {
+                    name: "x3F・MizHei",
+                    id: "5696575513",
+                    avatar: "https://i.ibb.co/5hprMSpG/Focus-on-the-2k-202601161957.jpg",
+                    personalImg: "https://i.ibb.co/mF56x8nd/Create-a-super-2k-202601152359.jpg",
+                    zalo: "http://zaloapp.com/qr/p/1b4csvc528jdl",
+                    desc: "Người gánh team có lời lói có sức lặng. Trầm tánh ít lói nhưng đã lói là ngày hôm đó trời sắp sập.",
+                    slogan: "\" có cái Iồn mà đòi ăn bố \", \"đjt mẹ mày\"",
+                    drive: "https://drive.google.com/drive/folders/13qTZETxw3qW7qC-cBgu8sBoi5-LBdbx2",
+                    color: "#00FF99" // Green
+                },
+                {
+                    name: "؄LàBOT",
+                    id: "51967566607",
+                    avatar: "https://i.ibb.co/z0K8gWL/Focus-on-the-2k-202601142317.jpg",
+                    personalImg: "https://i.ibb.co/prQgcvZt/Create-a-super-2k-202601160002.jpg",
+                    zalo: "http://zaloapp.com/qr/p/14sgtsws76ar",
+                    desc: "Đại ra ngấm ngầm của team, im re không bao giờ mở mic, không bao giờ đeo tai nghe, gái theo một nùi.",
+                    slogan: "\"vua map e\", \"anh đây cân hết\"",
+                    drive: "https://drive.google.com/drive/folders/1YAd35UOQMYV5gLF80trubhv1T3JR18P_",
+                    color: "#00CCFF" // Blue
+                },
+                {
+                    name: "takahậuv2",
+                    id: "51611570360",
+                    avatar: "https://i.ibb.co/pBVx0sbC/Focus-on-the-2k-202601142322-3.jpg",
+                    personalImg: "https://i.ibb.co/dsjFWB2L/Create-a-highresolution-2k-202601091957-4.jpg",
+                    zalo: "http://zaloapp.com/qr/p/1t6touy57mekd",
+                    desc: "Con đại báo của team, thấy rút nade là sẽ có 1 người trong team nock. Wâybua riêu.",
+                    slogan: "\"đỉ mẹ\", \"wâybua bị kiệt tha hoá\"",
+                    drive: "https://drive.google.com/drive/folders/1AVmV2X1kFDv-_OM8I6-4So-kl49LJ_Xd",
+                    color: "#FF00FF" // Magenta
+                },
+                {
+                    name: "ʚARP・HANAɞ",
+                    id: "51909794820",
+                    avatar: "https://i.ibb.co/0yZx9Lfp/Focus-on-the-2k-202601151844-1.jpg",
+                    personalImg: "https://i.ibb.co/0RHHTN5w/Create-a-super-2k-202601160006.jpg",
+                    zalo: "https://zaloapp.com/qr/p/1ua7iuy9l97nm?src=qr",
+                    desc: "lang băm hại đồng đội, vì gái bỏ ae",
+                    slogan: "\" còn thở là còn loot \", \" top 1 là số 2 ae là số 1 \" \" hay bắn không hay cứu đồng đội là chính \"",
+                    drive: "https://drive.google.com/drive/folders/1CdvGwDGvFA1Tr6z77299T7gAdMONG5Lb",
+                    color: "#FFFF00" // Yellow
+                },
+                {
+                    name: "Bảnk・Embé・",
+                    id: "5281916668",
+                    avatar: "https://i.ibb.co/wFTTwC4z/Focus-on-the-2k-202601151847.jpg",
+                    personalImg: "https://i.ibb.co/prrSWhkh/Create-a-super-2k-202601160011.jpg",
+                    zalo: "http://zaloapp.com/qr/p/1b47i3sgeaoeu",
+                    desc: "Dễ ăn, dễ nói, coi money như mạng, bán mình cho tư bản.",
+                    slogan: "\"tất cả tại hana\"",
+                    drive: "https://drive.google.com/drive/folders/1UmO2vthpzApE4HgBAYLBi6sWYWDJBuaJ",
+                    color: "#FF9900" // Orange
+                },
+                {
+                    name: "PhanAnh134",
+                    id: "52404702459",
+                    avatar: "https://i.ibb.co/YFtS12jb/Focus-on-the-2k-202601142319.jpg",
+                    personalImg: "https://i.ibb.co/B2L9vjrj/Create-a-super-2k-202601160014.jpg",
+                    zalo: "http://zaloapp.com/qr/p/5nseloelsgqo",
+                    desc: "Chơi cũng cũng nhưng được cái nhỏ tuổi nhất team và cũng cực xik nhất team, mỗi tội cười nghe như ma dễ nổi da gà.",
+                    slogan: "\"há há há há há\", \"ờm ờ thì\"",
+                    drive: "https://drive.google.com/drive/folders/1U4abwocQ4jtfUE2pEM6y7P4sZwLJjsNt",
+                    color: "#FF66CC" // Pink
+                },
+                {
+                    name: "SUPERBÒ",
+                    id: "51865319264",
+                    avatar: "https://i.ibb.co/cXx9SzSD/Focus-on-the-2k-202601142318-1.jpg",
+                    personalImg: "https://i.ibb.co/QFjJwdb8/Create-a-super-2k-202601160019.jpg",
+                    zalo: "http://zaloapp.com/qr/p/t222skzf2pjq",
+                    desc: "Gà nhưng chịu chơi. Được cái nói chuyện cưng xỉu.",
+                    slogan: "\"gặp là đánh\"",
+                    drive: "https://drive.google.com/drive/folders/1_C9ytsc9-LtF-f_4F5urP1DW1--e5CCj",
+                    color: "#00FFFF" // Cyan
+                },
+                {
+                    name: "『LT』MyThanh",
+                    id: "51865889213",
+                    avatar: "https://i.ibb.co/F40fWWTV/Focus-on-the-2k-202601142318-2.jpg",
+                    personalImg: "https://i.ibb.co/gZXgHsPb/Create-a-highresolution-2k-202601091954.jpg",
+                    zalo: "http://zaloapp.com/qr/p/1oo6vsh7h5h6r",
+                    desc: "Cũng là wâybua riêu nhưng đã trưởng thành",
+                    slogan: "\"Call Me 『LT』Senec903\", \" Legend Never Die\", \"không biết nữa\"",
+                    drive: "https://drive.google.com/drive/folders/1weALPi1OoGJWNpCa-W2SGqmL9lMG7FAn",
+                    color: "#9933FF" // Purple
+                }
+            ]
+        };
+
+        // Component: Member Card (Zig-Zag)
+        const MemberCard = ({ data, index, onClick, isLeader }) => {
+            const isEven = index % 2 === 0;
+            const borderColor = data.color;
+
+            // Zig Zag Logic: Even -> Avatar Left, Odd -> Avatar Right
+            // For Leader, we can force a specific layout or just treat as index 0
+            
+            return (
+                <div 
+                    onClick={() => onClick(data)}
+                    className={`relative cursor-pointer group mb-6 flex items-center ${isEven ? 'flex-row' : 'flex-row-reverse'} p-2`}
+                >
+                    {/* Avatar Side */}
+                    <div className="relative w-1/3 flex-shrink-0">
+                        <div 
+                            className="aspect-[9/16] rounded-xl overflow-hidden border-2 shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-105"
+                            style={{ borderColor: borderColor, boxShadow: `0 0 10px ${borderColor}` }}
+                        >
+                            <img 
+                                src={data.avatar} 
+                                alt={data.name} 
+                                className="w-full h-full object-cover"
+                                onError={(e) => {e.target.src='https://via.placeholder.com/150x266?text=No+Img'}}
+                            />
+                        </div>
+                        {isLeader && (
+                            <div className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded-full animate-pulse border-2 border-white">
+                                BOSS
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Info Side */}
+                    <div className={`w-2/3 flex flex-col justify-center px-4 ${isEven ? 'text-left items-start' : 'text-right items-end'}`}>
+                        <h3 className="text-lg md:text-xl font-bold gaming-font text-white drop-shadow-md break-all">
+                            {data.name}
+                        </h3>
+                        <p 
+                            className="text-sm md:text-base font-mono mt-1" 
+                            style={{ color: borderColor }}
+                        >
+                            ID: {data.id}
+                        </p>
+                        <button className="mt-2 text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 py-1 px-3 rounded border border-gray-600 transition">
+                            Xem chi tiết <i className="fas fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        // Component: Profile Modal (Pop-up 2)
+        const ProfileModal = ({ member, onClose }) => {
+            if (!member) return null;
+
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={onClose}>
+                    <div 
+                        className="bg-gray-900 border border-gray-700 w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl relative modal-enter shadow-2xl"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{ boxShadow: `0 0 20px ${member.color}40`, border: `1px solid ${member.color}` }}
+                    >
+                        {/* Close Button */}
+                        <button 
+                            onClick={onClose}
+                            className="absolute top-3 right-3 z-10 bg-black/50 hover:bg-black/80 text-white w-8 h-8 rounded-full flex items-center justify-center transition"
+                        >
+                            <i className="fas fa-times"></i>
+                        </button>
+
+                        {/* Personal Image */}
+                        <div className="w-full aspect-[9/16] relative">
+                             <img 
+                                src={member.personalImg} 
+                                alt={member.name} 
+                                className="w-full h-full object-cover"
+                                onError={(e) => {e.target.src='https://via.placeholder.com/450x800?text=No+Image'}}
+                            />
+                            {/* Overlay Gradient */}
+                            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="p-5 relative -mt-10">
+                            <h2 className="text-2xl font-bold gaming-font text-center mb-1 text-white shadow-black drop-shadow-lg">{member.name}</h2>
+                            <div className="flex justify-center mb-4">
+                                <a 
+                                    href={member.zalo} 
+                                    target="_blank" 
+                                    className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-1 rounded-full text-sm flex items-center gap-2 transition"
+                                >
+                                    <i className="fas fa-comment"></i> Kết bạn Zalo
+                                </a>
+                            </div>
+
+                            {/* Marquee Slogan */}
+                            <div className="mb-4 bg-gray-800/50 py-2 rounded border-l-4 border-r-4" style={{borderColor: member.color}}>
+                                <div className="marquee-container">
+                                    <div className="marquee-content text-yellow-400 font-bold italic text-sm">
+                                        {member.slogan} &nbsp; • &nbsp; {member.slogan}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Description */}
+                            <div className="bg-gray-800 p-3 rounded-lg mb-4 text-sm text-gray-300 leading-relaxed text-justify border border-gray-700">
+                                <span className="text-gray-500 font-bold block mb-1 text-xs uppercase">Mô tả:</span>
+                                {member.desc}
+                            </div>
+
+                            {/* Archive Button */}
+                            <a 
+                                href={member.drive}
+                                target="_blank"
+                                className="block w-full py-3 text-center font-bold uppercase tracking-wider rounded-lg transition transform active:scale-95 hover:brightness-110"
+                                style={{ backgroundColor: member.color, color: '#000' }}
+                            >
+                                <i className="fab fa-google-drive mr-2"></i> Kho lưu trữ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Component: Culture Modal
+        const CultureModal = ({ isOpen, onClose }) => {
+            if (!isOpen) return null;
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md" onClick={onClose}>
+                    <div 
+                        className="bg-gray-900 border-2 border-red-600 w-full max-w-lg p-6 rounded-xl modal-enter relative"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h2 className="text-2xl font-bold text-red-500 mb-4 text-center uppercase gaming-font">
+                            <i className="fas fa-skull-crossbones mr-2"></i> Văn Hoá Nhóm
+                        </h2>
+                        <p className="text-gray-200 text-justify leading-relaxed font-mono">
+                            "Nhóm thoải mái không ràng buộc, có thể nói chuyện hơi bậy, chửi cho đã cái mõm nhưng bít điểm để chửi không phải lôi za phả 18 đời cụ kị ra chửi, mọi hành zi quá khích sẽ bị go out. <span className="text-red-500 font-bold">ĐẶC BIỆT không chứa thể loại 3 we</span>"
+                        </p>
+                        <button 
+                            onClick={onClose}
+                            className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded font-bold uppercase transition"
+                        >
+                            Đã hiểu
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        const App = () => {
+            const [selectedMember, setSelectedMember] = useState(null);
+            const [showCulture, setShowCulture] = useState(false);
+
+            return (
+                <div className="min-h-screen pb-10">
+                    
+                    {/* HEADER */}
+                    <header className="relative w-full">
+                        {/* Hero Image */}
+                        <div className="w-full h-[45vh] relative overflow-hidden">
+                            <img 
+                                src="https://i.ibb.co/vxDWbQ0C/Create-a-highresolution-2k-202601160031.jpg" 
+                                alt="Gia Đình Nhìu Chiện PUBG" 
+                                className="w-full h-full object-cover object-center"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-[#050505]"></div>
+                        </div>
+                        
+                        {/* Team Info Overlay */}
+                        <div className="text-center -mt-16 relative z-10 px-4">
+                            <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 gaming-font uppercase drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
+                                Gia Đình <br/> Nhìu Chiện PUBG
+                            </h1>
+                            
+                            <div className="flex flex-col md:flex-row gap-3 justify-center items-center mt-6">
+                                <a 
+                                    href="https://zalo.me/g/eipdae678" 
+                                    target="_blank"
+                                    className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-full shadow-[0_0_15px_#2563eb] transition transform hover:scale-105"
+                                >
+                                    <i className="fas fa-user-plus mr-2"></i> Gia nhập gia đình
+                                </a>
+                                <a 
+                                    href="https://photos.app.goo.gl/xz763ZtwfMHn6JGt7" 
+                                    target="_blank"
+                                    className="bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-2 px-6 rounded-full shadow-[0_0_15px_#ca8a04] transition transform hover:scale-105"
+                                >
+                                    <i className="fas fa-images mr-2"></i> Xem Kỉ Niệm Team
+                                </a>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* MEMBERS LIST */}
+                    <main className="max-w-3xl mx-auto px-4 mt-12">
+                        <div className="text-center mb-10">
+                            <h2 className="text-2xl font-bold text-gray-400 uppercase tracking-widest border-b border-gray-800 inline-block pb-2">Danh sách thành viên</h2>
+                        </div>
+
+                        {/* Leader */}
+                        <div className="mb-12">
+                            <div className="text-center mb-4">
+                                <span className="bg-red-900 text-red-200 text-xs font-bold px-3 py-1 rounded uppercase tracking-wider">Chủ Team</span>
+                            </div>
+                            <MemberCard 
+                                data={teamData.leader} 
+                                index={0} 
+                                onClick={setSelectedMember} 
+                                isLeader={true}
+                            />
+                        </div>
+
+                        {/* Members */}
+                        <div className="space-y-4">
+                            {teamData.members.map((member, idx) => (
+                                <MemberCard 
+                                    key={idx} 
+                                    data={member} 
+                                    index={idx + 1} // Start index at 1 so zig zag continues correctly from leader(0)
+                                    onClick={setSelectedMember}
+                                />
+                            ))}
+                        </div>
+                    </main>
+
+                    {/* FOOTER ACTIONS */}
+                    <div className="text-center mt-16 mb-8 px-4">
+                        <button 
+                            onClick={() => setShowCulture(true)}
+                            className="bg-transparent border border-gray-600 text-gray-400 hover:text-white hover:border-white py-2 px-8 rounded transition uppercase font-bold text-sm"
+                        >
+                            Văn hoá nhóm
+                        </button>
+                    </div>
+
+                    {/* COPYRIGHT */}
+                    <footer className="text-center text-gray-600 text-xs py-4 border-t border-gray-900 mt-8">
+                        <p>1/2026 Gia Đình Nhiều Chiện PUBG - Thiết kế bởi THE BÁO</p>
+                    </footer>
+
+                    {/* MODALS */}
+                    <ProfileModal 
+                        member={selectedMember} 
+                        onClose={() => setSelectedMember(null)} 
+                    />
+                    
+                    <CultureModal 
+                        isOpen={showCulture} 
+                        onClose={() => setShowCulture(false)} 
+                    />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
+
